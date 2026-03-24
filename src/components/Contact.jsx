@@ -242,6 +242,7 @@ export default function Contact() {
             target="_blank"
             rel="noopener noreferrer"
             aria-label={`${platform}: ${handle}`}
+            title=""
             role="listitem"
             className="glass-card p-4 flex items-center gap-3"
             style={{ textDecoration: 'none', cursor: 'none', color: 'var(--text)' }}
