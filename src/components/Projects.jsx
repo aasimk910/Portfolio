@@ -59,16 +59,19 @@ function ProjectCard({ project, scrollYProgress, depth, shouldReduce }) {
   const cardOp = useTransform(scrollYProgress, [0, 0.15, 0.9, 1], [0, 1, 1, 0.7]);
 
   return (
-    <motion.article
+    <motion.a
+      href={project.href}
+      target="_blank"
+      rel="noopener noreferrer"
       className="glass-card p-7 flex flex-col gap-5"
-      style={{ y, opacity: cardOp }}
+      style={{ y, opacity: cardOp, textDecoration: 'none', cursor: 'none', display: 'flex' }}
       whileHover={{
         scale: 1.02,
         boxShadow: `0 0 28px rgba(0,255,136,0.18)`,
         borderColor: 'rgba(0,255,136,0.45)',
         transition: { duration: 0.2 },
       }}
-      aria-label={`Project: ${project.name}`}
+      aria-label={`View ${project.name} on GitHub`}
     >
       {/* Project name */}
       <h3
@@ -105,25 +108,20 @@ function ProjectCard({ project, scrollYProgress, depth, shouldReduce }) {
       </div>
 
       {/* Arrow link */}
-      <motion.a
-        href={project.href}
-        aria-label={`View ${project.name} details`}
+      <span
         className="font-mono self-start"
         style={{
           fontSize: '0.78rem',
           color: 'var(--accent)',
-          textDecoration: 'none',
           letterSpacing: '0.08em',
           display: 'flex',
           alignItems: 'center',
           gap: '0.4rem',
-          cursor: 'none',
         }}
-        whileHover={{ gap: '0.7rem', transition: { duration: 0.2 } }}
       >
         VIEW_PROJECT <span aria-hidden="true">→</span>
-      </motion.a>
-    </motion.article>
+      </span>
+    </motion.a>
   );
 }
 

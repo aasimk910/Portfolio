@@ -465,6 +465,43 @@ body {
   font-weight: 500;
 }
 
+/* ══════════════════════════════════════════════════════════════
+   MOBILE RESPONSIVENESS  (max-width: 639px)
+   ══════════════════════════════════════════════════════════════ */
+@media (max-width: 639px) {
+
+  /* Hide floating terminal and binary rain on small screens — too cluttered */
+  .floating-terminal { display: none; }
+
+  /* Move HUD to top-right so it doesn't overlap CTA button */
+  .status-hud {
+    bottom: auto;
+    top: 4.5rem;
+    right: 0.75rem;
+    padding: 0.4rem 0.65rem;
+    gap: 0.4rem;
+  }
+
+  /* Section vertical padding reduced */
+  .section-wrapper.py-28 { padding-top: 5rem; padding-bottom: 5rem; }
+
+  /* Terminal radar — hidden on mobile */
+  .threat-radar-wrap { display: none; }
+
+  /* Binary rain columns — hide on mobile */
+  .binary-strip { display: none !important; }
+
+  /* Nav cursor on touch */
+  .nav-link { cursor: auto; }
+
+  /* CTA button full-width on small screens */
+  .cta-btn {
+    width: 100%;
+    text-align: center;
+    padding: 0.85rem 1rem;
+  }
+}
+
 /* ── prefers-reduced-motion — kill ALL animations ── */
 @media (prefers-reduced-motion: reduce) {
   *,

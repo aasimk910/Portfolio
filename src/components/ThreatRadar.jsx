@@ -76,6 +76,7 @@ export default function ThreatRadar() {
   return (
     <motion.div
       aria-hidden="true"
+      className="threat-radar-wrap"
       initial={{ opacity: 0, scale: 0.8 }}
       animate={{ opacity: 1, scale: 1 }}
       transition={{ delay: 1.8, duration: 0.6, ease: 'easeOut' }}

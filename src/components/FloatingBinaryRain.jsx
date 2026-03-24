@@ -55,6 +55,7 @@ function BinaryStrip({ side }) {
   return (
     <div
       aria-hidden="true"
+      className="binary-strip"
       style={{
         position: 'fixed',
         ...posStyle,
