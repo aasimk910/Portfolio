@@ -7,6 +7,7 @@ export default {
         bg:       '#080C0F',
         surface:  'rgba(255,255,255,0.03)',
         text:     '#E8EAE6',
+        fg:       '#D7E2EA',
         accent:   '#00FF88',
         warning:  '#FF2442',
         muted:    '#4A5568',
