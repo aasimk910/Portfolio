@@ -3,8 +3,8 @@
  * Order: Hero → Marquee → About → Loadout (services) → Projects → Contact footer.
  */
 import { useEffect, useRef } from 'react';
-import { motion, useScroll, useTransform } from 'framer-motion';
-import { FadeIn, Magnet, AnimatedText, ContactButton, GhostButton } from './primitives';
+import { motion, useScroll, useTransform, useReducedMotion } from 'framer-motion';
+import { FadeIn, Magnet, Tilt, Extrude, AnimatedText, ContactButton, GhostButton } from './primitives';
 import { HeroEmblem, ShieldIcon, GamepadIcon, LockIcon, KeycapIcon } from './CyberArt';
 
 const EMAIL = 'mailto:aasimkhan910@gmail.com';
@@ -34,7 +34,7 @@ export function HeroSection() {
           as="h1"
           delay={0.15}
           y={40}
-          className="hero-heading w-full text-center font-black uppercase tracking-tight leading-none whitespace-nowrap text-[13vw] sm:text-[14vw] md:text-[15vw] lg:text-[16.2vw] mt-6 sm:mt-4 md:-mt-5"
+          className="hero-heading heading-3d w-full text-center font-black uppercase tracking-tight leading-none whitespace-nowrap text-[13vw] sm:text-[14vw] md:text-[15vw] lg:text-[16.2vw] mt-6 sm:mt-4 md:-mt-5"
         >
           Hi, i&apos;m aasim
         </FadeIn>
@@ -107,11 +107,11 @@ const ROW_2 = [
 function ItemCard({ name, cls, glyph }) {
   const c = CLASS_COLOR[cls];
   return (
-    <div className="item-card" style={{ '--c': c }}>
+    <Tilt max={16} perspective={700} glare className="item-card" style={{ '--c': c }}>
       <span className="item-card__class">[{cls}]</span>
       <span className="item-card__glyph" aria-hidden="true">{glyph}</span>
       <span className="item-card__name">{name}</span>
-    </div>
+    </Tilt>
   );
 }
 
@@ -138,7 +138,7 @@ export function MarqueeSection() {
   return (
     <section ref={sectionRef} className="pt-24 sm:pt-32 md:pt-40 pb-10 overflow-hidden" aria-label="Skills inventory">
       <p className="hud-line text-center mb-6">// INVENTORY — skills &amp; tools equipped</p>
-      <div className="flex flex-col gap-3">
+      <div className="marquee-belt flex flex-col gap-3">
         <div ref={row1} className="flex gap-3 w-max" style={{ willChange: 'transform', marginLeft: '-100vw' }}>
           {tripled(ROW_1).map(([n, c, g], i) => <ItemCard key={i} name={n} cls={c} glyph={g} />)}
         </div>
@@ -159,21 +159,21 @@ export function AboutSection() {
   return (
     <section id="about" className="relative min-h-screen flex items-center justify-center px-5 sm:px-8 md:px-10 py-20 overflow-x-clip">
       <FadeIn delay={0.1} x={-80} y={0} duration={0.9} className="absolute top-[4%] left-[1%] sm:left-[2%] md:left-[4%] w-[100px] sm:w-[140px] md:w-[190px] float-a">
-        <ShieldIcon className="w-full h-auto" />
+        <Tilt global max={50} perspective={600}><Extrude><ShieldIcon className="w-full h-auto" /></Extrude></Tilt>
       </FadeIn>
       <FadeIn delay={0.25} x={-80} y={0} duration={0.9} className="absolute bottom-[8%] left-[3%] sm:left-[6%] md:left-[10%] w-[90px] sm:w-[120px] md:w-[160px] float-b">
-        <KeycapIcon className="w-full h-auto" />
+        <Tilt global max={50} perspective={600}><Extrude><KeycapIcon className="w-full h-auto" /></Extrude></Tilt>
       </FadeIn>
       <FadeIn delay={0.15} x={80} y={0} duration={0.9} className="absolute top-[4%] right-[1%] sm:right-[2%] md:right-[4%] w-[120px] sm:w-[160px] md:w-[210px] float-b">
-        <GamepadIcon className="w-full h-auto" />
+        <Tilt global max={50} perspective={600}><Extrude><GamepadIcon className="w-full h-auto" /></Extrude></Tilt>
       </FadeIn>
       <FadeIn delay={0.3} x={80} y={0} duration={0.9} className="absolute bottom-[8%] right-[3%] sm:right-[6%] md:right-[10%] w-[90px] sm:w-[120px] md:w-[160px] float-a">
-        <LockIcon className="w-full h-auto" />
+        <Tilt global max={50} perspective={600}><Extrude><LockIcon className="w-full h-auto" /></Extrude></Tilt>
       </FadeIn>
 
       <div className="relative z-10 flex flex-col items-center gap-16 sm:gap-20 md:gap-24">
         <div className="flex flex-col items-center gap-10 sm:gap-14 md:gap-16">
-          <FadeIn as="h2" delay={0} y={40} className="hero-heading font-black uppercase leading-none tracking-tight text-center section-title">
+          <FadeIn as="h2" delay={0} y={40} className="hero-heading heading-3d font-black uppercase leading-none tracking-tight text-center section-title">
             About me
           </FadeIn>
           <AnimatedText
@@ -201,7 +201,7 @@ const LOADOUT = [
 export function LoadoutSection() {
   return (
     <section id="skills" className="loadout rounded-t-[40px] sm:rounded-t-[50px] md:rounded-t-[60px] px-5 sm:px-8 md:px-10 py-20 sm:py-24 md:py-32">
-      <FadeIn as="h2" className="text-[#0C0C0C] font-black uppercase text-center leading-none section-title mb-4">
+      <FadeIn as="h2" className="heading-3d heading-3d--light text-[#0C0C0C] font-black uppercase text-center leading-none section-title mb-4">
         Loadout
       </FadeIn>
       <p className="hud-line hud-line--dark text-center mb-16 sm:mb-20 md:mb-28">// what i bring to the party</p>
@@ -213,7 +213,7 @@ export function LoadoutSection() {
             delay={i * 0.1}
             className="loadout__item flex items-start gap-6 sm:gap-10 py-8 sm:py-10 md:py-12"
           >
-            <span className="loadout__num font-black leading-none">0{i + 1}</span>
+            <span className="loadout__num heading-3d--light font-black leading-none">0{i + 1}</span>
             <div className="flex flex-col gap-2 sm:gap-3 pt-2">
               <h3 className="font-medium uppercase" style={{ fontSize: 'clamp(1rem, 2.2vw, 2.1rem)' }}>{name}</h3>
               <p className="font-light leading-relaxed max-w-2xl opacity-60" style={{ fontSize: 'clamp(0.85rem, 1.6vw, 1.25rem)' }}>
@@ -275,12 +275,14 @@ const PROJECTS = [
 function ProjectCard({ project, index, total, progress }) {
   const targetScale = 1 - (total - 1 - index) * 0.03;
   const scale = useTransform(progress, [index / total, 1], [1, targetScale]);
+  const shouldReduce = useReducedMotion();
+  const rotateX = useTransform(progress, [index / total, 1], [0, shouldReduce ? 0 : -(total - 1 - index) * 5]);
 
   return (
     <div className="h-[75vh] sm:h-[85vh] flex items-start justify-center sticky top-20 sm:top-24 md:top-32">
       <motion.article
         className="project-card w-full max-w-6xl p-4 sm:p-6 md:p-8 flex flex-col gap-5 sm:gap-6"
-        style={{ scale, top: `${index * 28}px`, position: 'relative', transformOrigin: 'top center', '--hue': project.hue }}
+        style={{ scale, rotateX, transformPerspective: 1400, top: `${index * 28}px`, position: 'relative', transformOrigin: 'top center', '--hue': project.hue }}
       >
         <div className="flex flex-wrap items-center justify-between gap-4">
           <div className="flex items-center gap-4 sm:gap-6">
@@ -313,10 +315,10 @@ function ProjectCard({ project, index, total, progress }) {
               <p className="mt-2"><span className="text-accent">aasim@kali</span>:<span className="text-[#4AB8FF]">~</span>$ <span className="cursor-blink">█</span></p>
             </div>
           </div>
-          <div className="project-panel project-art flex items-center justify-center" aria-hidden="true">
+          <Tilt max={14} perspective={900} glare className="project-panel project-art flex items-center justify-center" aria-hidden="true">
             <span className="project-art__glyph">{project.glyph}</span>
             <span className="project-art__label">{project.repo}.exe</span>
-          </div>
+          </Tilt>
         </div>
       </motion.article>
     </div>
@@ -329,7 +331,7 @@ export function ProjectsSection() {
 
   return (
     <section id="projects" className="projects-section relative z-10 rounded-t-[40px] sm:rounded-t-[50px] md:rounded-t-[60px] -mt-10 sm:-mt-12 md:-mt-14 px-4 sm:px-8 md:px-10 pt-20 sm:pt-24 md:pt-32 pb-10">
-      <FadeIn as="h2" y={40} className="hero-heading font-black uppercase leading-none tracking-tight text-center section-title">
+      <FadeIn as="h2" y={40} className="hero-heading heading-3d font-black uppercase leading-none tracking-tight text-center section-title">
         Projects
       </FadeIn>
       <p className="hud-line text-center mt-4">// quests completed</p>
@@ -362,7 +364,7 @@ export function ContactSection() {
   return (
     <footer id="contact" className="flex flex-col items-center text-center gap-8 px-6 pt-20 pb-28 md:pt-28 md:pb-32">
       <p className="hud-line">// player 2 ready?</p>
-      <FadeIn as="h2" y={40} className="hero-heading font-black uppercase leading-none tracking-tight section-title">
+      <FadeIn as="h2" y={40} className="hero-heading heading-3d font-black uppercase leading-none tracking-tight section-title">
         Let&apos;s talk
       </FadeIn>
       <FadeIn delay={0.15}>

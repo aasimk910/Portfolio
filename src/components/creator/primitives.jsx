@@ -2,6 +2,8 @@
  * Reusable primitives for the 3D-creator layout:
  *   FadeIn        — whileInView fade/slide wrapper
  *   Magnet        — mouse-following magnetic hover
+ *   Tilt          — pointer-driven 3D tilt with optional glare
+ *   Extrude       — stacks Z-offset copies of an SVG to give it thickness
  *   AnimatedText  — char-by-char scroll-driven reveal
  *   ContactButton — RGB gradient pill (gamer glow)
  *   GhostButton   — outline pill
@@ -62,6 +64,90 @@ export function Magnet({ padding = 150, strength = 3, className, children }) {
   return (
     <div ref={ref} className={className} style={{ willChange: 'transform' }}>
       {children}
+    </div>
+  );
+}
+
+/**
+ * Tilt — pointer-driven 3D rotation. Children can sit at different depths with
+ * `transform: translateZ(...)` because the element keeps `preserve-3d`.
+ *   global — track the pointer across the whole window instead of only over the element
+ *   glare  — moving light highlight (needs a positioned element with no ::after of its own)
+ */
+export function Tilt({ as = 'div', max = 12, perspective = 900, global = false, glare = false, className, style, children, ...rest }) {
+  const Comp = as;
+  const ref = useRef(null);
+  const shouldReduce = useReducedMotion();
+
+  useEffect(() => {
+    const el = ref.current;
+    if (!el || shouldReduce || !window.matchMedia('(pointer: fine)').matches) return;
+
+    let raf = 0;
+    const set = (px, py) => {
+      cancelAnimationFrame(raf);
+      raf = requestAnimationFrame(() => {
+        el.style.setProperty('--rx', `${-py * max}deg`);
+        el.style.setProperty('--ry', `${px * max}deg`);
+        el.style.setProperty('--gx', `${(px + 0.5) * 100}%`);
+        el.style.setProperty('--gy', `${(py + 0.5) * 100}%`);
+      });
+    };
+    const clamp = (v) => Math.max(-0.5, Math.min(0.5, v));
+
+    const onMove = (e) => {
+      const r = el.getBoundingClientRect();
+      if (global) {
+        set(
+          clamp((e.clientX - (r.left + r.width / 2)) / window.innerWidth),
+          clamp((e.clientY - (r.top + r.height / 2)) / window.innerHeight),
+        );
+      } else {
+        set((e.clientX - r.left) / r.width - 0.5, (e.clientY - r.top) / r.height - 0.5);
+      }
+    };
+    const onLeave = () => set(0, 0);
+
+    const target = global ? window : el;
+    target.addEventListener('pointermove', onMove, { passive: true });
+    if (!global) el.addEventListener('pointerleave', onLeave);
+    return () => {
+      cancelAnimationFrame(raf);
+      target.removeEventListener('pointermove', onMove);
+      el.removeEventListener('pointerleave', onLeave);
+    };
+  }, [max, global, shouldReduce]);
+
+  return (
+    <Comp
+      ref={ref}
+      className={`tilt${glare ? ' tilt--glare' : ''} ${className ?? ''}`}
+      style={{ '--persp': `${perspective}px`, ...style }}
+      {...rest}
+    >
+      {children}
+    </Comp>
+  );
+}
+
+/**
+ * Extrude — gives a flat SVG real thickness by stacking darkened copies behind it
+ * along the Z axis. Only the front copy is exposed to layout and keeps its glow.
+ */
+export function Extrude({ depth = 18, layers = 8, className, children }) {
+  const step = depth / layers;
+  return (
+    <div className={`extrude ${className ?? ''}`}>
+      {Array.from({ length: layers }, (_, i) => (
+        <div
+          key={i}
+          className="extrude__layer"
+          style={{ transform: `translateZ(${-(layers - i) * step}px)`, filter: `brightness(${0.18 + (i / layers) * 0.3})` }}
+        >
+          {children}
+        </div>
+      ))}
+      <div className="extrude__front">{children}</div>
     </div>
   );
 }
