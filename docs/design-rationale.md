@@ -57,7 +57,7 @@
 ## D3. CSS-3D layered SVG instead of 3D renders or WebGL
 
 **Decision:** Build all illustrations as inline SVG and give them depth with CSS 3D (`perspective`, `preserve-3d`, `translateZ`), not images or WebGL.
-- **Hero emblem:** about 20 stacked SVG layers. Sixteen neon slices form the shield's walls, the face sits on top, the circuit traces and keyhole float in front, and two orbit rings sit on tilted planes that pass through the shield. The whole thing turns toward the pointer (`Tilt global`) and sways slowly when the pointer is still.
+- **Hero emblem:** about 20 stacked SVG layers. Sixteen grey slices form the shield's walls, the face sits on top, the circuit traces and keyhole float in front, and two orbit rings sit on tilted planes that pass through the shield. The whole thing turns toward the pointer (`Tilt global`) and sways slowly when the pointer is still.
 - **About icons:** `Extrude` stacks darkened copies of each flat icon behind it for real thickness, and the icons turn to follow the pointer.
 - **Supporting depth:** skill cards and project art tilt with a glare highlight, and their inner parts sit at different depths. The skill rows lean back like a conveyor belt. Covered project cards lean back as the next card stacks on top. Headings are extruded with stacked drop-shadows. The contact button has a physical bottom edge that presses down.
 
@@ -81,24 +81,31 @@
 
 ---
 
-## D4. Colour system: near-black base, neon green accent, magenta gradient CTA, colour-coded skill classes
+## D4. Colour system: monochrome — near-black, off-white, greys
 
-**Decision:**
-- Base `#0C0C0C`, text `#D7E2EA`.
-- `--accent: #00FF88` for HUD text, links, focus and the cursor.
-- A magenta-purple-orange gradient (`--c-rgb`) used **only** on the primary "Contact Me" / "Send a Message" button.
-- Five skill-class colours (green SEC, blue WEB, purple GAME, yellow LANG, orange TOOL) on cards and project art.
+**Decision (revised 2026-10-23):** Remove all hue from the site.
+- **Base:** `#0B0B0B`; **text:** `#EDEDED`; **muted:** `#8C8C8C`; **hairlines:** `rgba(237,237,237,0.12)`; **cards and panels:** `#131313`.
+- **Primary CTA:** a solid off-white pill with black text and a grey bottom edge. Secondary buttons are outlined and fill white on hover.
+- **Illustrations:** grey gradients only, with soft black drop shadows and no glow.
 
-**Context:** The palette has to signal "security" (terminal green) and "gaming" (RGB/neon) without turning into a rainbow.
+**What changed from the first version:** The first palette used neon green, a magenta-purple-orange gradient on the CTA, five skill-class colours, per-project hues, glows and CRT scanlines. Aasim didn't like the colours and asked for a more minimalist look.
+
+**Options considered:**
+- **A. Keep the neon palette and turn it down.** Still busy, and doesn't answer the feedback.
+- **B. Monochrome plus one accent hue.** Minimal, but means choosing a brand colour Aasim hasn't asked for.
+- **C. Fully monochrome (chosen).** All hierarchy comes from contrast, size and depth.
 
 **Reasoning:**
-- **Von Restorff Effect:** the gradient appears nowhere else, so the contact button is always the most distinctive thing on screen. That supports Goal 3.
-- **Law of Similarity:** a class colour means the same thing everywhere (green always means security), so the marquee works as a legend for the project cards.
-- Main text on the base passes WCAG AA by a wide margin (about 14:1). On the light Loadout block, the dark green HUD text `#0B7A45` was chosen instead of `#00FF88` to keep contrast above 4.5:1.
+- **Von Restorff Effect:** the CTA is the only large solid-white shape on a dark page, so it stays the most noticeable element without needing colour (supports Goal 3).
+- **Hierarchy without colour:** with no hue to lean on, the 3D depth (D3), the type scale and the black-to-light switch in the Loadout block (D5) carry the structure.
+- **Contrast:** main text is about 17:1 and muted text about 6:1 on the base, both above WCAG AA.
 
-**Trade-offs:** Five hues plus green plus the gradient is near the upper limit. Yellow and orange are close enough that colour-blind visitors may confuse LANG and TOOL. The text labels (`[LANG]`) prevent this from causing a real error.
+**Trade-offs:**
+- Skill categories are now told apart only by their `[SEC]`/`[WEB]` text tags, so the marquee no longer works as a colour legend for the projects.
+- The cyber/gamer personality now rests on wording (D2) and the shield art, not colour.
+- To add one accent later, change `--accent` in `index.css`, `accent` in `tailwind.config.js` and the CTA background in `creator.css`.
 
-**Validation:** Run every text/background pair through a contrast checker, and check the marquee in a deuteranopia simulator.
+**Validation:** In a 5-second test, peers should still name "security" and "games" (see D1). If they don't, the theme needs to come from content rather than colour.
 
 ---
 
@@ -106,7 +113,7 @@
 
 **Decision:** The Loadout section uses a light background (`#F2F5F3`) with a rounded top edge. The Projects section then overlaps it with its own rounded dark edge (`-mt-10`).
 
-**Context:** A long all-dark page with neon accents flattens out. Every section starts to look alike, and visitors lose track of where they are.
+**Context:** A long all-dark page flattens out. Every section starts to look alike, and visitors lose track of where they are.
 
 **Reasoning:** A single change in background tells the visitor they have moved from "who I am" to "what I can do for you". The overlapping rounded edges (Law of Common Region) make Projects feel like a new layer sliding over the previous one. This sets up the stacking-card effect in D6.
 
@@ -118,7 +125,7 @@
 
 ## D6. Sticky stacking project cards with a terminal panel and glyph art, no screenshots
 
-**Decision:** Each project is a large rounded card that sticks to the top of the viewport and shrinks slightly as the next card stacks over it. A card holds: a big index number, a category tag in the project's colour, a description, tech chips, a fake `git clone` terminal, a glyph "cover" (`repo.exe`), and a **View Code** button. A final **All Repositories** button follows the cards.
+**Decision:** Each project is a large rounded card that sticks to the top of the viewport and shrinks slightly as the next card stacks over it. A card holds: a big index number, a category tag, a description, tech chips, a fake `git clone` terminal, a glyph "cover" (`repo.exe`), and a **View Code** button. A final **All Repositories** button follows the cards.
 
 **Context:** The four projects are code repositories (a weather app, two Unity games, a MERN app). None has polished screenshots, and the goal is to get visitors into the code (Goal 2).
 
@@ -158,7 +165,7 @@
 
 ## D8. Email is the only contact path, offered three times
 
-**Decision:** Contact is a `mailto:` link, with no form. The gradient contact button appears in the hero, after About, and in the footer, together with the plain email address and six social links.
+**Decision:** Contact is a `mailto:` link, with no form. The solid white contact button appears in the hero, after About, and in the footer, together with the plain email address and six social links.
 
 **Context:** It's a static site with no backend. A form would need a third-party service and spam protection.
 

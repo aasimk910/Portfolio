@@ -1,5 +1,5 @@
 /**
- * Sections — 3D-creator template layout, re-skinned cyber/gamer.
+ * Sections — 3D-creator template layout, monochrome minimal skin.
  * Order: Hero → Marquee → About → Loadout (services) → Projects → Contact footer.
  */
 import { useEffect, useRef } from 'react';
@@ -20,7 +20,7 @@ const NAV = [
 
 export function HeroSection() {
   return (
-    <section id="hero" className="relative h-screen flex flex-col overflow-x-clip hero-scanlines">
+    <section id="hero" className="relative h-screen flex flex-col overflow-x-clip">
       <FadeIn as="nav" delay={0} y={-20} className="relative z-20 flex justify-between px-6 md:px-10 pt-6 md:pt-8" aria-label="Primary">
         {NAV.map((n) => (
           <a key={n.href} href={n.href} className="creator-nav-link text-sm md:text-lg lg:text-[1.4rem]">
@@ -51,9 +51,9 @@ export function HeroSection() {
       <div className="relative z-20 mt-auto flex justify-between items-end px-6 md:px-10 pb-7 sm:pb-8 md:pb-10 gap-4">
         <FadeIn delay={0.35} y={20} className="flex flex-col gap-3">
           <p className="hud-line hidden sm:block">
-            STATUS: <span className="text-accent">LEARNING</span>
+            STATUS: <span className="text-fg">LEARNING</span>
             <span className="opacity-40 mx-2">|</span>
-            LOC: <span className="text-warning">KATHMANDU, NP</span>
+            LOC: <span className="text-fg">KATHMANDU, NP</span>
           </p>
           <p
             className="text-fg font-light uppercase tracking-wide leading-snug max-w-[160px] sm:max-w-[220px] md:max-w-[280px]"
@@ -71,14 +71,6 @@ export function HeroSection() {
 }
 
 /* ─────────────── Marquee (skill "item cards") ─────────────── */
-
-const CLASS_COLOR = {
-  SEC: '#00FF88',
-  WEB: '#4AB8FF',
-  GAME: '#D04BFF',
-  LANG: '#FFD84A',
-  TOOL: '#FF8A3D',
-};
 
 const ROW_1 = [
   ['Ethical Hacking', 'SEC', '⌖'],
@@ -105,9 +97,8 @@ const ROW_2 = [
 ];
 
 function ItemCard({ name, cls, glyph }) {
-  const c = CLASS_COLOR[cls];
   return (
-    <Tilt max={16} perspective={700} glare className="item-card" style={{ '--c': c }}>
+    <Tilt max={16} perspective={700} glare className="item-card">
       <span className="item-card__class">[{cls}]</span>
       <span className="item-card__glyph" aria-hidden="true">{glyph}</span>
       <span className="item-card__name">{name}</span>
@@ -201,7 +192,7 @@ const LOADOUT = [
 export function LoadoutSection() {
   return (
     <section id="skills" className="loadout rounded-t-[40px] sm:rounded-t-[50px] md:rounded-t-[60px] px-5 sm:px-8 md:px-10 py-20 sm:py-24 md:py-32">
-      <FadeIn as="h2" className="heading-3d heading-3d--light text-[#0C0C0C] font-black uppercase text-center leading-none section-title mb-4">
+      <FadeIn as="h2" className="heading-3d heading-3d--light text-[#0B0B0B] font-black uppercase text-center leading-none section-title mb-4">
         Loadout
       </FadeIn>
       <p className="hud-line hud-line--dark text-center mb-16 sm:mb-20 md:mb-28">// what i bring to the party</p>
@@ -238,7 +229,6 @@ const PROJECTS = [
     description: 'Live weather data via API with search history stored in MySQL.',
     tags: ['JavaScript', 'PHP', 'HTML/CSS', 'MySQL'],
     glyph: '☁',
-    hue: '#4AB8FF',
   },
   {
     name: 'Purano Bhudimau',
@@ -248,7 +238,6 @@ const PROJECTS = [
     description: 'A 3D horror/exploration game set in a Nepali village, with scripted events and atmospheric design.',
     tags: ['Unity', 'C#', 'Game Dev', '3D'],
     glyph: '☠',
-    hue: '#FF2442',
   },
   {
     name: 'Customer Pickup',
@@ -258,7 +247,6 @@ const PROJECTS = [
     description: 'Delivery simulation using A* pathfinding and Ant Colony Optimisation for intelligent NPC routing.',
     tags: ['Unity', 'C#', 'A*', 'ACO'],
     glyph: '✦',
-    hue: '#D04BFF',
   },
   {
     name: 'Travel Buddy',
@@ -268,7 +256,6 @@ const PROJECTS = [
     description: 'Discover destinations, plan itineraries, and connect with fellow travellers.',
     tags: ['React', 'Node.js', 'MongoDB', 'Express'],
     glyph: '✈',
-    hue: '#00FF88',
   },
 ];
 
@@ -282,7 +269,7 @@ function ProjectCard({ project, index, total, progress }) {
     <div className="h-[75vh] sm:h-[85vh] flex items-start justify-center sticky top-20 sm:top-24 md:top-32">
       <motion.article
         className="project-card w-full max-w-6xl p-4 sm:p-6 md:p-8 flex flex-col gap-5 sm:gap-6"
-        style={{ scale, rotateX, transformPerspective: 1400, top: `${index * 28}px`, position: 'relative', transformOrigin: 'top center', '--hue': project.hue }}
+        style={{ scale, rotateX, transformPerspective: 1400, top: `${index * 28}px`, position: 'relative', transformOrigin: 'top center' }}
       >
         <div className="flex flex-wrap items-center justify-between gap-4">
           <div className="flex items-center gap-4 sm:gap-6">
@@ -290,7 +277,7 @@ function ProjectCard({ project, index, total, progress }) {
               0{index + 1}
             </span>
             <div className="flex flex-col gap-1">
-              <span className="hud-line" style={{ color: project.hue }}>[{project.category}]</span>
+              <span className="hud-line">[{project.category}]</span>
               <h3 className="text-fg font-medium uppercase" style={{ fontSize: 'clamp(1.1rem, 2.4vw, 2.2rem)' }}>{project.name}</h3>
             </div>
           </div>
@@ -308,11 +295,11 @@ function ProjectCard({ project, index, total, progress }) {
               </div>
             </div>
             <div className="project-panel project-terminal p-5 sm:p-6 hidden sm:block" style={{ minHeight: 'clamp(160px, 22vw, 340px)' }}>
-              <p><span className="text-accent">aasim@kali</span>:<span className="text-[#4AB8FF]">~</span>$ git clone \</p>
+              <p><span className="text-fg">aasim@kali</span>:~$ git clone \</p>
               <p className="pl-4 opacity-70 break-all">github.com/aasimk910/{project.repo}</p>
               <p className="opacity-50 mt-2">Cloning into &apos;{project.repo}&apos;...</p>
               <p className="opacity-50">Receiving objects: 100% done.</p>
-              <p className="mt-2"><span className="text-accent">aasim@kali</span>:<span className="text-[#4AB8FF]">~</span>$ <span className="cursor-blink">█</span></p>
+              <p className="mt-2"><span className="text-fg">aasim@kali</span>:~$ <span className="cursor-blink">█</span></p>
             </div>
           </div>
           <Tilt max={14} perspective={900} glare className="project-panel project-art flex items-center justify-center" aria-hidden="true">
@@ -368,7 +355,7 @@ export function ContactSection() {
         Let&apos;s talk
       </FadeIn>
       <FadeIn delay={0.15}>
-        <a href={EMAIL} className="text-fg font-light hover:text-accent transition-colors" style={{ fontSize: 'clamp(1rem, 2vw, 1.5rem)' }}>
+        <a href={EMAIL} className="text-fg font-light hover:opacity-60 transition-opacity" style={{ fontSize: 'clamp(1rem, 2vw, 1.5rem)' }}>
           aasimkhan910@gmail.com
         </a>
       </FadeIn>
@@ -384,7 +371,7 @@ export function ContactSection() {
           </li>
         ))}
       </FadeIn>
-      <p className="hud-line opacity-50 mt-8">© {new Date().getFullYear()} Aasim Khan · Hack ethically · GG</p>
+      <p className="hud-line mt-8">© {new Date().getFullYear()} Aasim Khan · Hack ethically · GG</p>
     </footer>
   );
 }

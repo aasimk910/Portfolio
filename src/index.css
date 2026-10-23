@@ -8,11 +8,11 @@
 
 /* ── CSS Custom Properties ── */
 :root {
-  --bg:      #080C0F;
-  --text:    #E8EAE6;
-  --accent:  #00FF88;
-  --warning: #FF2442;
-  --muted:   #4A5568;
+  --bg:      #0B0B0B;
+  --text:    #EDEDED;
+  --accent:  #EDEDED;
+  --warning: #EDEDED;
+  --muted:   #8C8C8C;
   --font-mono: 'DM Mono', monospace;
   --font-body: 'Sora', sans-serif;
 }
@@ -62,7 +62,7 @@ body {
 /* ── Scrollbar ── */
 ::-webkit-scrollbar { width: 4px; }
 ::-webkit-scrollbar-track { background: var(--bg); }
-::-webkit-scrollbar-thumb { background: var(--accent); border-radius: 2px; }
+::-webkit-scrollbar-thumb { background: #3A3A3A; border-radius: 2px; }
 
 /* ══════════════════════════════════════════════════════════════
    KEYFRAME ANIMATIONS
@@ -179,8 +179,8 @@ body {
   font-family: var(--font-mono);
   font-size: 0.65rem;
   letter-spacing: 0.08em;
-  color: var(--accent);
-  border: 1px solid rgba(0,255,136,0.35);
+  color: var(--muted);
+  border: 1px solid rgba(237,237,237,0.14);
   padding: 2px 8px;
   border-radius: 2px;
   text-transform: uppercase;

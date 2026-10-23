@@ -4,13 +4,13 @@ export default {
   theme: {
     extend: {
       colors: {
-        bg:       '#080C0F',
+        bg:       '#0B0B0B',
         surface:  'rgba(255,255,255,0.03)',
-        text:     '#E8EAE6',
-        fg:       '#D7E2EA',
-        accent:   '#00FF88',
-        warning:  '#FF2442',
-        muted:    '#4A5568',
+        text:     '#EDEDED',
+        fg:       '#EDEDED',
+        accent:   '#EDEDED',
+        warning:  '#EDEDED',
+        muted:    '#8C8C8C',
       },
       fontFamily: {
         mono: ['"DM Mono"', 'monospace'],
